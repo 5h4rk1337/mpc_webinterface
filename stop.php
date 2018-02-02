@@ -1,5 +1,8 @@
 <?php
 shell_exec('mpc stop');
-header('Location: /index.php');
+if (empty($_GET['ajax'])) {
+    header('Location: /index.php');
+} else {
+    echo "This is stop.php";
+}
 ?>
-

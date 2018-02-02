@@ -1,5 +1,8 @@
 <?php
-sleep(2);
 shell_exec('mpc next');
-header('Location: /index.php');
+if (empty($_GET['ajax'])) {
+    header('Location: /index.php');
+} else {
+    echo "This is next.php";
+}
 ?>
