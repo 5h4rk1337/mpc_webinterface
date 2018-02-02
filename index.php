@@ -27,6 +27,7 @@ $Sender = shell_exec('mpc -f %name% | head -n 1');
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+        <script src="assets/js/jquery-3.3.1.min.js"></script>
 	</head>
 	<body class="loading">
 		<div id="wrapper">
@@ -78,6 +79,24 @@ $Sender = shell_exec('mpc -f %name% | head -n 1');
 			window.onload = function() { document.body.className = ''; }
 			window.ontouchmove = function() { return false; }
 			window.onorientationchange = function() { document.body.scrollTop = 0; }
+
+			$(document).ready(function() {
+                $(".fa-play").click(function (e) {
+                    e.preventDefault();
+                    $(".icon").fadeOut();
+                    $.ajax({
+                        type: "GET",
+                        url: $(this).attr('href') + "?ajax=1",
+                        success: function(data) {
+                            $(".icon").fadeIn();
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            $(".icon").fadeIn();
+                            alert("Fehler. Antwort vom Server: " + xhr.responseText + ". Status: " + textStatus);
+                        }
+                    });
+                });
+            });
 		</script>
 	</body>
 </html>
