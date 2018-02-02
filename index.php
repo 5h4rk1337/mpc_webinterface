@@ -81,7 +81,7 @@ $Sender = shell_exec('mpc -f %name% | head -n 1');
 			window.onorientationchange = function() { document.body.scrollTop = 0; }
 
 			$(document).ready(function() {
-                $(".fa-play").click(function (e) {
+                $("a.icon").click(function (e) {
                     e.preventDefault();
                     $(".icon").fadeOut();
                     $.ajax({
