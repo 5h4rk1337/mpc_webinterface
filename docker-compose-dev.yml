@@ -1,0 +1,17 @@
+version: "3"
+services:
+  webserver:
+    build:
+      context: .
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - ./:/app
+    environment:
+      APACHE_DOCUMENT_ROOT: /app
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: bridge
