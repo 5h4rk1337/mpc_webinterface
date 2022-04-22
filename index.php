@@ -1,102 +1,291 @@
-<!DOCTYPE HTML>
-<!--
-	Aerial by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-
-<!– aktueller Sender –>
-<?php
-sleep( 1 );
-$Status = shell_exec('mpc current');
-$Song = shell_exec('mpc -f %title% | head -n 1');
-$Sender = shell_exec('mpc -f %name% | head -n 1');
-    if (isset($_POST['play-button']))
-    {
-         shell_exec('mpc play');
-    }
-?>
-<!– /aktueller Sender –>
+<!DOCTYPE html>
 
 <html>
-	<head>
-		<title>RaspiRadio</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-        <script src="assets/js/jquery-3.3.1.min.js"></script>
-	</head>
-	<body class="loading">
-		<div id="wrapper">
-			<div id="bg"></div>
-			<div id="overlay"></div>
-			<div id="main">
+<head>
 
-				<!-- Header -->
-					<header id="header">
-						<h1>RaspiRadio</h1>
+<title>RaspiRadio</title>
 
-						<p>
-						<?php
-						if ($Status == '')
-						echo "Im Moment ist kein Sender aktiv.";
-						else
-						echo "$Song  &nbsp;•  $Sender";
-						?>
-						</p>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable = no">
+<meta charset="utf-8" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="white">
+<link rel="apple-touch-icon" href="/favicon.ico">
+<link rel="apple-touch-startup-image" href="images/splash.png">
+<script src="js/jquery-3.6.0.min.js"></script>
 
-						<!-- <p>Security Chief &nbsp;&bull;&nbsp; Cyborg &nbsp;&bull;&nbsp; Never asked for this</p> -->
-						<nav>
-							<ul>
-							<form method="post">
-    <p>
-        <!--button name="button" class="icon fa-step-backward">Run Perl</button-->
-    </p>
-    </form>
-								<li><a href="prev.php" class="icon fa-step-backward"><span class="label">step-backward</span></a></li>
-								<li><a href="play.php" class="icon fa-play"><span class="label">play</span></a></li>
-								<!--li><a name="play-button" data-role="button" class="icon fa-play"><span class="label">play</span></a></li-->
-								<li><a href="stop.php" class="icon fa-stop"><span class="label">sotp</span></a></li>
-								<li><a href="next.php" class="icon fa-step-forward"><span class="label">step-forward</span></a></li>
-								<li><a href="volume-down.php" class="icon fa-volume-down"><span class="label">volume-down</span></a></li>
-								<li><a href="volume-up.php" class="icon fa-volume-up"><span class="label">volume-up</span></a></li>
-							</ul>
-						</nav>
-					</header>
+<!-- 
+<script>
+const button = document.getElementById('slide');
 
-				<!-- Footer -->
-					<!--footer id="footer">
-						< span class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.</span>
-					</footer-->
+button.onclick = function () {
+  document.getElementById('Scroll').scrollLeft += 20;
+};
+</script>
+ -->
 
-			</div>
-		</div>
-		<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-		<script>
-			window.onload = function() { document.body.className = ''; }
-			window.ontouchmove = function() { return false; }
-			window.onorientationchange = function() { document.body.scrollTop = 0; }
 
-			$(document).ready(function() {
-                $("a.icon").click(function (e) {
-                    e.preventDefault();
-                    $(".icon").fadeOut();
-                    $.ajax({
-                        type: "GET",
-                        url: $(this).attr('href') + "?ajax=1",
-                        success: function(data) {
-                            $(".icon").fadeIn();
-                        },
-                        error: function(xhr, textStatus, errorThrown) {
-                            $(".icon").fadeIn();
-                            alert("Fehler. Antwort vom Server: " + xhr.responseText + ". Status: " + textStatus);
-                        }
-                    });
-                });
+<style>
+
+html {
+    -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
+}
+
+* {
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer */
+	-khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+	-webkit-user-select: none; /* Chrome, Safari, and Opera */
+	-webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+}
+
+body {
+	margin: 0px;
+	position: fixed;
+	top: 0;
+	width: 100%
+}
+
+@media only screen and (max-height: 486px) {
+  body {
+  	position: relative;
+  }
+}
+
+
+* {
+	-webkit-tap-highlight-color: transparent;
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 2fr auto 0.5fr auto 0.5fr auto 2fr;
+/*   background-color: #EEE; */
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.grid-container > div {
+/*   background-color: rgba(255, 255, 255, 0.8); */
+  background-color: #FaFaFa;
+  border-radius: 20px;
+  box-shadow: 2px 2px 5px #eee;
+  transition: all .2s ease-in-out;
+}
+
+
+.grid-container > div:active {
+	box-shadow: 1px 1px 2px #eee;
+	transform: scale(0.95);
+}
+
+
+.scrolling-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+  padding-top: 10px;
+  padding-bottom: 10px;
+/*   background-color: #EEE; */
+  -webkit-overflow-scrolling: touch;
+/* 
+  &::-webkit-scrollbar {
+  display: none;
+  }
+ */
+
+.card {
+    flex: 0 0 auto;
+  } 
+}
+
+
+
+h1, p {
+  text-align: center;
+  font-family: helvetica;
+}
+
+.sender {
+  border-radius: 20px;
+  margin-right: 15px;
+  margin-left: 15px;
+  width: 150px;
+  height: auto;
+  box-shadow: 2px 2px 10px #777;
+  transition: all .2s ease-in-out;
+}
+
+.sender:active {
+	box-shadow: 1px 1px 3px #333;
+	transform: scale(0.97);
+}
+
+
+.button {
+    margin: 15px;
+    display: block;
+}
+
+p.status {
+	min-height: 1em;
+}
+
+</style>
+</head>
+
+
+<body ontouchstart="">
+
+<h1>RaspiRadio</h1>
+
+<p class="status" id="status"></p>
+
+<p class="status" id="song"></p>
+
+<p class="status" id="sender"></p>
+
+<p class="status" id="volume"></p>
+
+
+
+<div class="grid-container">
+  <a class="grid-item"></a>
+  <div><a href="play-pause.php"		class="grid-item"><img id="play-or-pause-button" class="button" src="images/controll/pause-blue.png" width="auto" height="50"></a></div>
+  <a class="grid-item"></a>
+  <div><a href="volume-down.php"	class="grid-item"><img class="button" src="images/controll/low-vol-blue.png" width="auto" height="50"></a></div>
+  <a class="grid-item"></a>
+  <div><a href="volume-up.php"		class="grid-item"><img class="button" src="images/controll/up-vol-blue.png" width="auto" height="50"></a></div>
+  <a class="grid-item"></a>
+</div>
+
+<div class="scrolling-wrapper">
+  <div><a href="switch-sender.php?sender_id=1"	class="card"><img class="sender" src="images/streams/live.jpg"></a></div>
+  <div><a href="switch-sender.php?sender_id=2"	class="card"><img class="sender" src="images/streams/harte-saite.jpg"></a></div>
+  <div><a href="switch-sender.php?sender_id=3"	class="card"><img class="sender" src="images/streams/wacken.jpg"></a></div>
+  <div><a href="switch-sender.php?sender_id=4"	class="card"><img class="sender" src="images/streams/parabelritter.jpg"></a></div>
+  <div><a href="switch-sender.php?sender_id=5"	class="card"><img class="sender" src="images/streams/punk.jpg"></a></div>
+  <div><a href="switch-sender.php?sender_id=6"	class="card"><img class="sender" src="images/streams/mittelalter.jpg"></a></div>
+  <div><a href="switch-sender.php?sender_id=7"	class="card"><img class="sender" src="images/streams/queen.jpg"></a></div>
+  <div><a href="switch-sender.php?sender_id=8"	class="card"><img class="sender" src="images/streams/southern.png"></a></div>
+  <div><a href="switch-sender.php?sender_id=9"	class="card"><img class="sender" src="images/streams/death.png"></a></div>
+  <div><a href="switch-sender.php?sender_id=10"	class="card"><img class="sender" src="images/streams/myrock.jpg"></a></div>
+  <div><a href="switch-sender.php?sender_id=11"	class="card"><img class="sender" src="images/streams/dlf.jpg"></a></div>
+  <div><a href="switch-sender.php?sender_id=12"	class="card"><img class="sender" src="images/streams/rockland.png"></a></div>
+</div>
+
+<script>
+		// Alles aktualisieren
+		function updateStatus() {
+			//console.log("updateStatus");
+			$.ajax({
+					url: "status.php",
+					success: function(data) {
+						//console.log(data);
+						var data = $.parseJSON(data);
+						//console.log(data);
+						
+						var p_status = $("#status");
+						var p_song = $("#song");
+						var p_sender = $("#sender");
+						var p_volume = $("#volume");
+						var img_play_or_pause_button = $("#play-or-pause-button");
+						
+						//console.log(data);
+						if (data.status == null) {
+							p_status.text("Im Moment ist kein Sender aktiv.").show();
+							p_song.text("");
+							p_sender.text("");
+						} else {
+							p_status.text("");				
+							p_song.text(data["song"]);
+							p_sender.text(data["sender"]);
+						}
+						
+						p_volume.text(data["volume"]);
+						
+						if (data.play_status == "playing") {
+							img_play_or_pause_button.attr('src', 'images/controll/pause-blue.png');
+						} else {
+							img_play_or_pause_button.attr('src', 'images/controll/play-blue.png');
+						}
+						
+						//$("img").attr('src', 'images/controll/pause-blue.png');
+					},
+                    error: function(xhr, textStatus, errorThrown)
+                    {
+                        alert("Fehler. Antwort vom Server: " + xhr.responseText + ". Status: " + textStatus);
+                    }
             });
-		</script>
-	</body>
+		}
+			// Volume aktualisieren.
+			function updateStatusVolume() {
+			//console.log("updateStatus");
+			$.ajax({
+					url: "status-volume.php",
+					success: function(data) {
+						//console.log(data);
+						var data = $.parseJSON(data);
+						//console.log(data);
+						
+						var p_volume = $("#volume");
+						//var img_play_or_pause_button = $("#play-or-pause-button");
+						
+						//console.log(data);
+						
+						p_volume.text(data["volume"]);
+
+					},
+                    error: function(xhr, textStatus, errorThrown)
+                    {
+                        alert("Fehler. Antwort vom Server: " + xhr.responseText + ". Status: " + textStatus);
+                    }
+            });
+		}
+
+		// Quasi "onload" alles aktualisieren. 
+		$(document).ready(function() {
+             $("a.card").click(function (e) {
+                  e.preventDefault();
+                  $.ajax({
+                      url: $(this).attr('href') + "?ajax=1",
+                      success: function(data) {
+                      		updateStatus();
+                      },
+                      error: function(xhr, textStatus, errorThrown)
+                      {
+                          alert("Fehler. Antwort vom Server: " + xhr.responseText + ". Status: " + textStatus);
+                      }
+                  });
+              });
+              
+              updateStatus();
+          });
+        
+        // Bei klick auf Play/Pause, lauter, oder leiser die Anzeige für Volume aktualisieren.
+		$("a.grid-item").click(function (e) {
+                  e.preventDefault();
+                  $.ajax({
+                      url: $(this).attr('href') + "?ajax=1",
+                      success: function(data) {
+                      		updateStatus();
+                      },
+                      error: function(xhr, textStatus, errorThrown)
+                      {
+                          alert("Fehler. Antwort vom Server: " + xhr.responseText + ". Status: " + textStatus);
+                      }
+                  });
+                  updateStatusVolume();
+		});
+        
+        // Alle 5s den Status aktualisieren  
+        $(document).ready(function() {              
+              setInterval(updateStatus, 6000);
+        });
+          
+</script>
+
+</body>
 </html>
