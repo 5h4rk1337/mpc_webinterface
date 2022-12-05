@@ -153,11 +153,11 @@ p.status {
 
 <div class="grid-container">
   <a class="grid-item"></a>
-  <div><a href="play-pause.php"		class="grid-item"><img id="play-or-pause-button" class="button" src="images/controll/pause-blue.svg" width="auto" height="50"></a></div>
+  <div><a href="play-pause.php"		class="grid-item"><img id="play-or-pause-button" class="button" src="images/control/pause-blue.svg" width="auto" height="50"></a></div>
   <a class="grid-item"></a>
-  <div><a href="volume-down.php"	class="grid-item"><img class="button" src="images/controll/low-vol-blue.png" width="auto" height="50"></a></div>
+  <div><a href="volume-down.php"	class="grid-item"><img class="button" src="images/control/low-vol-blue.png" width="auto" height="50"></a></div>
   <a class="grid-item"></a>
-  <div><a href="volume-up.php"		class="grid-item"><img class="button" src="images/controll/up-vol-blue.png" width="auto" height="50"></a></div>
+  <div><a href="volume-up.php"		class="grid-item"><img class="button" src="images/control/up-vol-blue.png" width="auto" height="50"></a></div>
   <a class="grid-item"></a>
 </div>
 
@@ -207,12 +207,12 @@ p.status {
 						p_volume.text(data["volume"]);
 						
 						if (data.play_status == "playing") {
-							img_play_or_pause_button.attr('src', 'images/controll/pause-blue.svg');
+							img_play_or_pause_button.attr('src', 'images/control/pause-blue.svg');
 						} else {
-							img_play_or_pause_button.attr('src', 'images/controll/play-blue.svg');
+							img_play_or_pause_button.attr('src', 'images/control/play-blue.svg');
 						}
 						
-						//$("img").attr('src', 'images/controll/pause-blue.png');
+						//$("img").attr('src', 'images/control/pause-blue.png');
 					},
                     error: function(xhr, textStatus, errorThrown)
                     {
